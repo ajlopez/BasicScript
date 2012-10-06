@@ -51,3 +51,4 @@ assert.equal('foo', expression.value);
 assert.equal('foo', expression.evaluate());
 
 assert.equal(null, parser.parseExpression());
+
