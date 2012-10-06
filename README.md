@@ -34,7 +34,9 @@ basicscript.evaluate('one+two'); // 3
 
 Execute command
 ```js
-basicscript.execute('one = 1');
+var context = new basicscript.Context();
+basicscript.execute('one = 1', context);
+context.getValue('one'); // 1
 ```
 
 ## Development
