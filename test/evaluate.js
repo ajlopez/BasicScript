@@ -26,3 +26,20 @@ assert.equal('foo', basicscript.evaluate("'foo'"));
 
 assert.equal('foo', basicscript.evaluate('"foo"'));
 
+// Evaluate undefined name
+
+var context = new basicscript.Context();
+
+assert.equal(null, basicscript.evaluate('foo', context));
+
+// Define values
+
+context.setValue('one', 1);
+context.setValue('two', 2);
+
+assert.equal(1, context.getValue('one'));
+
+// Evaluate defined name
+
+assert.equal(1, basicscript.evaluate('one', context));
+
