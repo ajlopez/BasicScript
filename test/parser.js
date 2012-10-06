@@ -78,7 +78,7 @@ var expression = parser.parseExpression();
 assert.ok(expression);
 assert.equal(3, expression.evaluate());
 
-// Execute asign
+// Execute simple assign
 
 var parser = new basicscript.Parser("a=1");
 var command = parser.parseCommand();
@@ -87,3 +87,22 @@ assert.ok(command);
 command.execute(context);
 
 assert.equal(1, context.getValue("a"));
+
+// Execute expression assign
+
+var parser = new basicscript.Parser("b=1+2");
+var command = parser.parseCommand();
+
+assert.ok(command);
+command.execute(context);
+
+assert.equal(3, context.getValue("b"));
+
+// Execute simple expression
+
+var parser = new basicscript.Parser("1+2");
+var command = parser.parseCommand();
+
+assert.ok(command);
+assert.equal(3, command.evaluate(context));
+
