@@ -137,3 +137,28 @@ assert.equal("_foo", token.value);
 assert.equal(TokenType.Name, token.type);
 
 assert.equal(null, lexer.nextToken());
+
+// Parse add operator
+
+var lexer = new basicscript.Lexer("+");
+var token = lexer.nextToken();
+
+assert.ok(token);
+assert.equal("+", token.value);
+assert.equal(TokenType.Operator, token.type);
+
+assert.equal(null, lexer.nextToken());
+
+// Parse arithmetic operators
+
+var arithops = "+-*/";
+var lexer = new basicscript.Lexer(arithops);
+
+for (var n in arithops) {
+    var token = lexer.nextToken();
+    assert.ok(token);
+    assert.equal(arithops[n], token.value);
+    assert.equal(TokenType.Operator, token.type);
+}
+
+assert.equal(null, lexer.nextToken());
