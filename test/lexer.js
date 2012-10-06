@@ -162,3 +162,46 @@ for (var n in arithops) {
 }
 
 assert.equal(null, lexer.nextToken());
+
+// Parse add expression with integers
+
+var lexer = new basicscript.Lexer("1+2");
+var token = lexer.nextToken();
+
+assert.ok(token);
+assert.equal(1, token.value);
+assert.equal(TokenType.Integer, token.type);
+
+token = lexer.nextToken();
+assert.ok(token);
+assert.equal("+", token.value);
+assert.equal(TokenType.Operator, token.type);
+
+token = lexer.nextToken();
+assert.ok(token);
+assert.equal(2, token.value);
+assert.equal(TokenType.Integer, token.type);
+
+assert.equal(null, lexer.nextToken());
+
+// Parse add expression with names
+
+var lexer = new basicscript.Lexer("a+b");
+var token = lexer.nextToken();
+
+assert.ok(token);
+assert.equal("a", token.value);
+assert.equal(TokenType.Name, token.type);
+
+token = lexer.nextToken();
+assert.ok(token);
+assert.equal("+", token.value);
+assert.equal(TokenType.Operator, token.type);
+
+token = lexer.nextToken();
+assert.ok(token);
+assert.equal("b", token.value);
+assert.equal(TokenType.Name, token.type);
+
+assert.equal(null, lexer.nextToken());
+
