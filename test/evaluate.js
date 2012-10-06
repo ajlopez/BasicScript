@@ -51,3 +51,11 @@ assert.equal(3, basicscript.evaluate('1+2'));
 
 assert.equal(3, basicscript.evaluate('one+two', context));
 
+// Evaluate subtract integers
+
+assert.equal(-1, basicscript.evaluate('1-2'));
+
+// Evaluate subtract names
+
+assert.equal(-1, basicscript.evaluate('one-two', context));
+
