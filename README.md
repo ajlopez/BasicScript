@@ -1,6 +1,6 @@
 # BasicScript
 
-BASIC language interpreter in Javascript
+BASIC language interpreter in Javascript. Work in Progress
 
 ## Installation
 
@@ -17,6 +17,24 @@ Reference in your program:
 
 ```js
 var basicscript = require('basicscript');
+```
+
+Evaluate expression with constants
+```js
+basicscript.evaluate('1+2'); // 3
+```
+
+Evaluate expression with variables
+```js
+var context = new basicscript.Context();
+context.setValue('one', 1);
+context.setValue('two', 2);
+basicscript.evaluate('one+two'); // 3
+```
+
+Execute command
+```js
+basicscript.execute('one = 1');
 ```
 
 TBD
