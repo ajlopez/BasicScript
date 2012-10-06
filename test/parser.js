@@ -64,3 +64,16 @@ var context = new basicscript.Context();
 
 assert.ok(expression);
 assert.equal(null, expression.evaluate());
+
+// Set initial values
+
+context.setValue('one', 1);
+context.setValue('two', 2);
+
+// Evaluate add integers
+
+var parser = new basicscript.Parser("1+2");
+var expression = parser.parseExpression();
+
+assert.ok(expression);
+assert.equal(3, expression.evaluate());
