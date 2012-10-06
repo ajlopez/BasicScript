@@ -149,6 +149,17 @@ assert.equal(TokenType.Operator, token.type);
 
 assert.equal(null, lexer.nextToken());
 
+// Parse equal operator
+
+var lexer = new basicscript.Lexer("=");
+var token = lexer.nextToken();
+
+assert.ok(token);
+assert.equal("=", token.value);
+assert.equal(TokenType.Operator, token.type);
+
+assert.equal(null, lexer.nextToken());
+
 // Parse arithmetic operators
 
 var arithops = "+-*/";
