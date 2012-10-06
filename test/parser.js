@@ -28,9 +28,20 @@ assert.equal(123, expression.evaluate());
 
 assert.equal(null, parser.parseExpression());
 
-// Parse string expression
+// Parse string expression with double quote
 
 var parser = new basicscript.Parser('"foo"');
+var expression = parser.parseExpression();
+
+assert.ok(expression);
+assert.equal('foo', expression.value);
+assert.equal('foo', expression.evaluate());
+
+assert.equal(null, parser.parseExpression());
+
+// Parse string expression with single quote
+
+var parser = new basicscript.Parser("'foo'");
 var expression = parser.parseExpression();
 
 assert.ok(expression);
