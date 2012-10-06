@@ -2,15 +2,13 @@
 var basicscript = require('../'),
     assert = require('assert');
 
-// Execute null
+// Execute simple assign
 
-assert.equal(null, basicscript.execute(null));
+var context = new basicscript.Context();
+basicscript.execute('a=1', context);
+assert.equal(1, context.getValue('a'));
 
-// Execute empty string
+// Execute simple add assign
 
-assert.equal(null, basicscript.execute(''));
-
-// Execute spaces
-
-assert.equal(null, basicscript.execute('  '));
-
+basicscript.execute('b=1+2', context);
+assert.equal(3, context.getValue('b'));

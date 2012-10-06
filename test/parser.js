@@ -77,3 +77,13 @@ var expression = parser.parseExpression();
 
 assert.ok(expression);
 assert.equal(3, expression.evaluate());
+
+// Execute asign
+
+var parser = new basicscript.Parser("a=1");
+var command = parser.parseCommand();
+
+assert.ok(command);
+command.execute(context);
+
+assert.equal(1, context.getValue("a"));
