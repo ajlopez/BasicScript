@@ -37,8 +37,6 @@ Execute command
 basicscript.execute('one = 1');
 ```
 
-TBD
-
 ## Development
 
 ```
