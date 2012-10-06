@@ -36,6 +36,7 @@ assert.equal(null, basicscript.evaluate('foo', context));
 
 context.setValue('one', 1);
 context.setValue('two', 2);
+context.setValue('three', 3);
 
 assert.equal(1, context.getValue('one'));
 
@@ -58,4 +59,20 @@ assert.equal(-1, basicscript.evaluate('1-2'));
 // Evaluate subtract names
 
 assert.equal(-1, basicscript.evaluate('one-two', context));
+
+// Evaluate multiply integers
+
+assert.equal(6, basicscript.evaluate('2*3'));
+
+// Evaluate multiply names
+
+assert.equal(6, basicscript.evaluate('two*three', context));
+
+// Evaluate divide integers
+
+assert.equal(2/3, basicscript.evaluate('2/3'));
+
+// Evaluate divide names
+
+assert.equal(2/3, basicscript.evaluate('two/three', context));
 
