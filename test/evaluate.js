@@ -43,3 +43,11 @@ assert.equal(1, context.getValue('one'));
 
 assert.equal(1, basicscript.evaluate('one', context));
 
+// Evaluate add integers
+
+assert.equal(3, basicscript.evaluate('1+2'));
+
+// Evaluate add names
+
+assert.equal(3, basicscript.evaluate('one+two', context));
+
