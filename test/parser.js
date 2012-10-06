@@ -14,3 +14,16 @@ var expression = parser.parseExpression();
 assert.ok(expression);
 assert.equal(123, expression.value);
 assert.equal(123, expression.evaluate());
+
+assert.equal(null, parser.parseExpression());
+
+// Parse integer expression with spaces
+
+var parser = new basicscript.Parser(' 123 ');
+var expression = parser.parseExpression();
+
+assert.ok(expression);
+assert.equal(123, expression.value);
+assert.equal(123, expression.evaluate());
+
+assert.equal(null, parser.parseExpression());
