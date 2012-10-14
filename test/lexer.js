@@ -253,3 +253,16 @@ assert.equal("\n", token.value);
 assert.equal(TokenType.EndOfLine, token.type);
 
 assert.equal(null, lexer.nextToken());
+
+// Push token
+
+var lexer = new basicscript.Lexer("");
+var tokenadd = new basicscript.Token("+", TokenType.Operator);
+var tokenminus = new basicscript.Token("-", TokenType.Operator);
+lexer.pushToken(tokenadd);
+lexer.pushToken(tokenminus);
+
+assert.equal(lexer.nextToken(), tokenminus);
+assert.equal(lexer.nextToken(), tokenadd);
+assert.equal(lexer.nextToken(), null);
+
