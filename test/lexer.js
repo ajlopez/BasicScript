@@ -216,3 +216,40 @@ assert.equal(TokenType.Name, token.type);
 
 assert.equal(null, lexer.nextToken());
 
+// Parse new line
+
+var lexer = new basicscript.Lexer("\n");
+var token = lexer.nextToken();
+
+assert.ok(token);
+assert.equal("\n", token.value);
+assert.equal(TokenType.EndOfLine, token.type);
+
+assert.equal(null, lexer.nextToken());
+
+// Parse carriage return, new line
+
+var lexer = new basicscript.Lexer("\r\n");
+var token = lexer.nextToken();
+
+assert.ok(token);
+assert.equal("\n", token.value);
+assert.equal(TokenType.EndOfLine, token.type);
+
+assert.equal(null, lexer.nextToken());
+
+// Parse two new lines
+
+var lexer = new basicscript.Lexer("\n\n");
+var token = lexer.nextToken();
+
+assert.ok(token);
+assert.equal("\n", token.value);
+assert.equal(TokenType.EndOfLine, token.type);
+
+token = lexer.nextToken();
+assert.ok(token);
+assert.equal("\n", token.value);
+assert.equal(TokenType.EndOfLine, token.type);
+
+assert.equal(null, lexer.nextToken());
