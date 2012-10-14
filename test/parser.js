@@ -110,7 +110,7 @@ assert.equal(3, command.evaluate(context));
 
 // Execute two commands
 
-var parser = new basicscript.Parser("a=1\nb=2");
+var parser = new basicscript.Parser("a=2\nb=3");
 var command = parser.parseCommand();
 
 assert.ok(command);
@@ -123,5 +123,28 @@ assert.ok(command);
 assert.ok(command instanceof basicscript.AssignCommand);
 command.execute(context);
 
-assert.equal(1, context.getValue("a"));
-assert.equal(2, context.getValue("b"));
+assert.equal(2, context.getValue("a"));
+assert.equal(3, context.getValue("b"));
+
+// Parse equals expression
+
+var parser = new basicscript.Parser("one = 1");
+var expression = parser.parseExpression();
+
+assert.ok(expression);
+assert.ok(expression instanceof basicscript.BinaryExpression);
+assert.equal(expression.evaluate(context), true);
+
+// Parse and execute if command
+
+var parser = new basicscript.Parser("if one = 1\nb=4\nend");
+var command = parser.parseCommand();
+
+assert.ok(command);
+assert.ok(command instanceof basicscript.IfCommand);
+
+assert.equal(parser.parseCommand(), null);
+command.execute(context);
+assert.equal(4, context.getValue("b"));
+assert.equal(parser.parseCommand(), null);
+
