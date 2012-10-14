@@ -94,15 +94,34 @@ var parser = new basicscript.Parser("b=1+2");
 var command = parser.parseCommand();
 
 assert.ok(command);
+assert.ok(command instanceof basicscript.AssignCommand);
 command.execute(context);
 
 assert.equal(3, context.getValue("b"));
 
 // Execute simple expression
 
-var parser = new basicscript.Parser("1+2");
+var parser = new basicscript.Parser("1+2\n");
 var command = parser.parseCommand();
 
 assert.ok(command);
+assert.ok(command instanceof basicscript.ExpressionCommand);
 assert.equal(3, command.evaluate(context));
 
+// Execute two commands
+
+var parser = new basicscript.Parser("a=1\nb=2");
+var command = parser.parseCommand();
+
+assert.ok(command);
+assert.ok(command instanceof basicscript.AssignCommand);
+command.execute(context);
+
+command = parser.parseCommand();
+
+assert.ok(command);
+assert.ok(command instanceof basicscript.AssignCommand);
+command.execute(context);
+
+assert.equal(1, context.getValue("a"));
+assert.equal(2, context.getValue("b"));
