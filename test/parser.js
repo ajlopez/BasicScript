@@ -137,7 +137,7 @@ assert.equal(expression.evaluate(context), true);
 
 // Parse and execute if command
 
-var parser = new basicscript.Parser("if one = 1\nb=4\nend");
+var parser = new basicscript.Parser("if one = 1\nb=4\nc=5\nend");
 var command = parser.parseCommand();
 
 assert.ok(command);
@@ -146,5 +146,20 @@ assert.ok(command instanceof basicscript.IfCommand);
 assert.equal(parser.parseCommand(), null);
 command.execute(context);
 assert.equal(4, context.getValue("b"));
+assert.equal(5, context.getValue("c"));
+assert.equal(parser.parseCommand(), null);
+
+// Parse and execute if command with else
+
+var parser = new basicscript.Parser("if one = 2\nb=5\nelse\nc=6\nend");
+var command = parser.parseCommand();
+
+assert.ok(command);
+assert.ok(command instanceof basicscript.IfCommand);
+
+assert.equal(parser.parseCommand(), null);
+command.execute(context);
+assert.notEqual(5, context.getValue("b"));
+assert.equal(6, context.getValue("c"));
 assert.equal(parser.parseCommand(), null);
 
