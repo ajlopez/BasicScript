@@ -1,14 +1,14 @@
 
-var basicscript = require('../'),
-    assert = require('assert');
+var basicscript = require('../');
 
-// Execute simple assign
+exports['execute simple assign'] = function (test) {
+    var context = new basicscript.Context();
+    basicscript.execute('a=1', context);
+    test.equal(1, context.getValue('a'));
+}
 
-var context = new basicscript.Context();
-basicscript.execute('a=1', context);
-assert.equal(1, context.getValue('a'));
-
-// Execute simple add assign
-
-basicscript.execute('b=1+2', context);
-assert.equal(3, context.getValue('b'));
+exports['execute simple add assign'] = function (test) {
+    var context = new basicscript.Context();
+    basicscript.execute('b=1+2', context);
+    test.equal(3, context.getValue('b'));
+}
