@@ -94,15 +94,72 @@ var parser = new basicscript.Parser("b=1+2");
 var command = parser.parseCommand();
 
 assert.ok(command);
+assert.ok(command instanceof basicscript.AssignCommand);
 command.execute(context);
 
 assert.equal(3, context.getValue("b"));
 
 // Execute simple expression
 
-var parser = new basicscript.Parser("1+2");
+var parser = new basicscript.Parser("1+2\n");
 var command = parser.parseCommand();
 
 assert.ok(command);
+assert.ok(command instanceof basicscript.ExpressionCommand);
 assert.equal(3, command.evaluate(context));
+
+// Execute two commands
+
+var parser = new basicscript.Parser("a=2\nb=3");
+var command = parser.parseCommand();
+
+assert.ok(command);
+assert.ok(command instanceof basicscript.AssignCommand);
+command.execute(context);
+
+command = parser.parseCommand();
+
+assert.ok(command);
+assert.ok(command instanceof basicscript.AssignCommand);
+command.execute(context);
+
+assert.equal(2, context.getValue("a"));
+assert.equal(3, context.getValue("b"));
+
+// Parse equals expression
+
+var parser = new basicscript.Parser("one = 1");
+var expression = parser.parseExpression();
+
+assert.ok(expression);
+assert.ok(expression instanceof basicscript.BinaryExpression);
+assert.equal(expression.evaluate(context), true);
+
+// Parse and execute if command
+
+var parser = new basicscript.Parser("if one = 1\nb=4\nc=5\nend");
+var command = parser.parseCommand();
+
+assert.ok(command);
+assert.ok(command instanceof basicscript.IfCommand);
+
+assert.equal(parser.parseCommand(), null);
+command.execute(context);
+assert.equal(4, context.getValue("b"));
+assert.equal(5, context.getValue("c"));
+assert.equal(parser.parseCommand(), null);
+
+// Parse and execute if command with else
+
+var parser = new basicscript.Parser("if one = 2\nb=5\nelse\nc=6\nend");
+var command = parser.parseCommand();
+
+assert.ok(command);
+assert.ok(command instanceof basicscript.IfCommand);
+
+assert.equal(parser.parseCommand(), null);
+command.execute(context);
+assert.notEqual(5, context.getValue("b"));
+assert.equal(6, context.getValue("c"));
+assert.equal(parser.parseCommand(), null);
 

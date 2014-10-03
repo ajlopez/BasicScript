@@ -215,3 +215,53 @@ exports['parse add expression with names'] = function (test) {
 
     test.equal(null, lexer.nextToken());
 }
+
+exports['parse new line'] = function (test) {
+    var lexer = new basicscript.Lexer("\n");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("\n", token.value);
+    test.equal(basicscript.TokenType.EndOfLine, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse carriage return, new line'] = function (test) {
+    var lexer = new basicscript.Lexer("\r\n");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("\n", token.value);
+    test.equal(basicscript.TokenType.EndOfLine, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse two new lines'] = function (test) {
+    var lexer = new basicscript.Lexer("\n\n");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("\n", token.value);
+    test.equal(basicscript.TokenType.EndOfLine, token.type);
+
+    token = lexer.nextToken();
+    test.ok(token);
+    test.equal("\n", token.value);
+    test.equal(basicscript.TokenType.EndOfLine, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['push token'] = function (test) {
+    var lexer = new basicscript.Lexer("");
+    var tokenadd = new basicscript.Token("+", basicscript.TokenType.Operator);
+    var tokenminus = new basicscript.Token("-", basicscript.TokenType.Operator);
+    lexer.pushToken(tokenadd);
+    lexer.pushToken(tokenminus);
+
+    test.equal(lexer.nextToken(), tokenminus);
+    test.equal(lexer.nextToken(), tokenadd);
+    test.equal(lexer.nextToken(), null);
+}
