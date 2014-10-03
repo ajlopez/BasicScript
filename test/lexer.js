@@ -1,218 +1,217 @@
 
 global.testing = true;
 
-var basicscript = require('../'),
-    assert = require('assert');
+var basicscript = require('../');
     
-var TokenType = basicscript.TokenType;
-
-var lexer = new basicscript.Lexer();
-
-assert.ok(lexer);
-assert.equal(null, lexer.nextToken());
-
-// Parse integer
-
-var lexer = new basicscript.Lexer('123');
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal(123, token.value);
-assert.equal(basicscript.TokenType.Integer, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse integer with spaces
-
-var lexer = new basicscript.Lexer('  123 ');
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal(123, token.value);
-assert.equal(basicscript.TokenType.Integer, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse string token with double quote
-
-var lexer = new basicscript.Lexer('"foo"');
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal('foo', token.value);
-assert.equal(TokenType.String, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse string token with single quote
-
-var lexer = new basicscript.Lexer("'foo'");
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal('foo', token.value);
-assert.equal(TokenType.String, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse two integers
-
-var lexer = new basicscript.Lexer("123 456");
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal(123, token.value);
-assert.equal(TokenType.Integer, token.type);
-
-token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal(456, token.value);
-assert.equal(TokenType.Integer, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse name
-
-var lexer = new basicscript.Lexer("a");
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal("a", token.value);
-assert.equal(TokenType.Name, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse name with upper case letters
-
-var lexer = new basicscript.Lexer("FOO");
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal("FOO", token.value);
-assert.equal(TokenType.Name, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse name with mixed case letters
-
-var lexer = new basicscript.Lexer("Foo");
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal("Foo", token.value);
-assert.equal(TokenType.Name, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse name with digits
-
-var lexer = new basicscript.Lexer("foo123");
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal("foo123", token.value);
-assert.equal(TokenType.Name, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse name with underscore at middle
-
-var lexer = new basicscript.Lexer("foo_bar");
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal("foo_bar", token.value);
-assert.equal(TokenType.Name, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse name with underscore at start
-
-var lexer = new basicscript.Lexer("_foo");
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal("_foo", token.value);
-assert.equal(TokenType.Name, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse add operator
-
-var lexer = new basicscript.Lexer("+");
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal("+", token.value);
-assert.equal(TokenType.Operator, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse equal operator
-
-var lexer = new basicscript.Lexer("=");
-var token = lexer.nextToken();
-
-assert.ok(token);
-assert.equal("=", token.value);
-assert.equal(TokenType.Operator, token.type);
-
-assert.equal(null, lexer.nextToken());
-
-// Parse arithmetic operators
-
-var arithops = "+-*/";
-var lexer = new basicscript.Lexer(arithops);
-
-for (var n in arithops) {
-    var token = lexer.nextToken();
-    assert.ok(token);
-    assert.equal(arithops[n], token.value);
-    assert.equal(TokenType.Operator, token.type);
+exports['get token type and lexer'] = function (test) {
+    var TokenType = basicscript.TokenType;
+    var lexer = new basicscript.Lexer();
+    test.ok(lexer);
+    test.equal(null, lexer.nextToken());
 }
 
-assert.equal(null, lexer.nextToken());
+exports['parse integer'] = function (test) {
+    var lexer = new basicscript.Lexer('123');
+    var token = lexer.nextToken();
 
-// Parse add expression with integers
+    test.ok(token);
+    test.equal(123, token.value);
+    test.equal(basicscript.TokenType.Integer, token.type);
 
-var lexer = new basicscript.Lexer("1+2");
-var token = lexer.nextToken();
+    test.equal(null, lexer.nextToken());
+}
 
-assert.ok(token);
-assert.equal(1, token.value);
-assert.equal(TokenType.Integer, token.type);
+exports['parse integer with spaces'] = function (test) {
+    var lexer = new basicscript.Lexer('  123 ');
+    var token = lexer.nextToken();
 
-token = lexer.nextToken();
-assert.ok(token);
-assert.equal("+", token.value);
-assert.equal(TokenType.Operator, token.type);
+    test.ok(token);
+    test.equal(123, token.value);
+    test.equal(basicscript.TokenType.Integer, token.type);
 
-token = lexer.nextToken();
-assert.ok(token);
-assert.equal(2, token.value);
-assert.equal(TokenType.Integer, token.type);
+    test.equal(null, lexer.nextToken());
+}
 
-assert.equal(null, lexer.nextToken());
+exports['parse string token with double quote'] = function (test) {
+    var lexer = new basicscript.Lexer('"foo"');
+    var token = lexer.nextToken();
 
-// Parse add expression with names
+    test.ok(token);
+    test.equal('foo', token.value);
+    test.equal(basicscript.TokenType.String, token.type);
 
-var lexer = new basicscript.Lexer("a+b");
-var token = lexer.nextToken();
+    test.equal(null, lexer.nextToken());
+}
 
-assert.ok(token);
-assert.equal("a", token.value);
-assert.equal(TokenType.Name, token.type);
+exports['parse string token with single quote'] = function (test) {
+    var lexer = new basicscript.Lexer("'foo'");
+    var token = lexer.nextToken();
 
-token = lexer.nextToken();
-assert.ok(token);
-assert.equal("+", token.value);
-assert.equal(TokenType.Operator, token.type);
+    test.ok(token);
+    test.equal('foo', token.value);
+    test.equal(basicscript.TokenType.String, token.type);
 
-token = lexer.nextToken();
-assert.ok(token);
-assert.equal("b", token.value);
-assert.equal(TokenType.Name, token.type);
+    test.equal(null, lexer.nextToken());
+}
 
-assert.equal(null, lexer.nextToken());
+exports['parse two integers'] = function (test) {
+    var lexer = new basicscript.Lexer("123 456");
+    var token = lexer.nextToken();
 
+    test.ok(token);
+    test.equal(123, token.value);
+    test.equal(basicscript.TokenType.Integer, token.type);
+
+    token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal(456, token.value);
+    test.equal(basicscript.TokenType.Integer, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse name'] = function (test) {
+    var lexer = new basicscript.Lexer("a");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("a", token.value);
+    test.equal(basicscript.TokenType.Name, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse name with upper case letters'] = function (test) {
+    var lexer = new basicscript.Lexer("FOO");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("FOO", token.value);
+    test.equal(basicscript.TokenType.Name, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse name with mixed case letters'] = function (test) {
+    var lexer = new basicscript.Lexer("Foo");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("Foo", token.value);
+    test.equal(basicscript.TokenType.Name, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse name with digits'] = function (test) {
+    var lexer = new basicscript.Lexer("foo123");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("foo123", token.value);
+    test.equal(basicscript.TokenType.Name, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse name with underscore at middle'] = function (test) {
+    var lexer = new basicscript.Lexer("foo_bar");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("foo_bar", token.value);
+    test.equal(basicscript.TokenType.Name, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse name with underscore at start'] = function (test) {
+    var lexer = new basicscript.Lexer("_foo");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("_foo", token.value);
+    test.equal(basicscript.TokenType.Name, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse add operator'] = function (test) {
+    var lexer = new basicscript.Lexer("+");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("+", token.value);
+    test.equal(basicscript.TokenType.Operator, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse equal operator'] = function (test) {
+    var lexer = new basicscript.Lexer("=");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("=", token.value);
+    test.equal(basicscript.TokenType.Operator, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse arithmetic operators'] = function (test) {
+    var arithops = "+-*/";
+    var l = arithops.length;
+    var lexer = new basicscript.Lexer(arithops);
+
+    for (var n = 0; n < l; n++) {
+        var token = lexer.nextToken();
+        test.ok(token);
+        test.equal(arithops[n], token.value);
+        test.equal(basicscript.TokenType.Operator, token.type);
+    }
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse add expression with integers'] = function (test) {
+    var lexer = new basicscript.Lexer("1+2");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal(1, token.value);
+    test.equal(basicscript.TokenType.Integer, token.type);
+
+    token = lexer.nextToken();
+    test.ok(token);
+    test.equal("+", token.value);
+    test.equal(basicscript.TokenType.Operator, token.type);
+
+    token = lexer.nextToken();
+    test.ok(token);
+    test.equal(2, token.value);
+    test.equal(basicscript.TokenType.Integer, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse add expression with names'] = function (test) {
+    var lexer = new basicscript.Lexer("a+b");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("a", token.value);
+    test.equal(basicscript.TokenType.Name, token.type);
+
+    token = lexer.nextToken();
+    test.ok(token);
+    test.equal("+", token.value);
+    test.equal(basicscript.TokenType.Operator, token.type);
+
+    token = lexer.nextToken();
+    test.ok(token);
+    test.equal("b", token.value);
+    test.equal(basicscript.TokenType.Name, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
