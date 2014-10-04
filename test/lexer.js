@@ -1,7 +1,7 @@
 
 global.testing = true;
 
-var basicscript = require('../');
+var basicscript = require('..');
     
 exports['get token type and lexer'] = function (test) {
     var TokenType = basicscript.TokenType;

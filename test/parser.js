@@ -1,165 +1,169 @@
 
 global.testing = true;
 
-var basicscript = require('../'),
-    assert = require('assert');
+var basicscript = require('../');
 
-var parser = new basicscript.Parser();
+var context;
 
-assert.ok(parser);
+exports['get parser'] = function (test) {
+    var parser = new basicscript.Parser();
 
-// Parse integer expression
+    test.ok(parser);
+}
 
-var parser = new basicscript.Parser('123');
-var expression = parser.parseExpression();
+exports['parse integer expression'] = function (test) {
+    var parser = new basicscript.Parser('123');
+    var expression = parser.parseExpression();
 
-assert.ok(expression);
-assert.equal(123, expression.evaluate());
+    test.ok(expression);
+    test.equal(123, expression.evaluate());
 
-assert.equal(null, parser.parseExpression());
+    test.equal(null, parser.parseExpression());
+}
 
-// Parse integer expression with spaces
+exports['parse integer expression with spaces'] = function (test) {
+    var parser = new basicscript.Parser(' 123 ');
+    var expression = parser.parseExpression();
 
-var parser = new basicscript.Parser(' 123 ');
-var expression = parser.parseExpression();
+    test.ok(expression);
+    test.equal(123, expression.evaluate());
 
-assert.ok(expression);
-assert.equal(123, expression.evaluate());
+    test.equal(null, parser.parseExpression());
+}
 
-assert.equal(null, parser.parseExpression());
+exports['parse string expression with double quote'] = function (test) {
+    var parser = new basicscript.Parser('"foo"');
+    var expression = parser.parseExpression();
 
-// Parse string expression with double quote
+    test.ok(expression);
+    test.equal('foo', expression.evaluate());
 
-var parser = new basicscript.Parser('"foo"');
-var expression = parser.parseExpression();
+    test.equal(null, parser.parseExpression());
+}
 
-assert.ok(expression);
-assert.equal('foo', expression.evaluate());
+exports['parse string expression with single quote'] = function (test) {
+    var parser = new basicscript.Parser("'foo'");
+    var expression = parser.parseExpression();
 
-assert.equal(null, parser.parseExpression());
+    test.ok(expression);
+    test.equal('foo', expression.evaluate());
 
-// Parse string expression with single quote
+    test.equal(null, parser.parseExpression());
+}
 
-var parser = new basicscript.Parser("'foo'");
-var expression = parser.parseExpression();
+exports['evaluate name without context as null'] = function (test) {
+    var parser = new basicscript.Parser("foo");
+    var expression = parser.parseExpression();
 
-assert.ok(expression);
-assert.equal('foo', expression.evaluate());
+    test.ok(expression);
+    test.equal(null, expression.evaluate());
+}
 
-assert.equal(null, parser.parseExpression());
+exports['evaluate undefined name as null'] = function (test) {
+    var parser = new basicscript.Parser("foo");
+    var expression = parser.parseExpression();
 
-// Evaluate name without context as null
+    test.ok(expression);
+    test.equal(null, expression.evaluate());
+}
 
-var parser = new basicscript.Parser("foo");
-var expression = parser.parseExpression();
+exports['set and get initial values'] = function (test) {
+    context = new basicscript.Context();
+    context.setValue('one', 1);
+    context.setValue('two', 2);
+    test.equal(context.getValue('one'), 1);
+    test.equal(context.getValue('two'), 2);
+}
 
-assert.ok(expression);
-assert.equal(null, expression.evaluate());
+exports['evaluate add integers'] = function (test) {
+    var parser = new basicscript.Parser("1+2");
+    var expression = parser.parseExpression();
 
-// Evaluate undefined name as null
+    test.ok(expression);
+    test.equal(3, expression.evaluate());
+}
 
-var parser = new basicscript.Parser("foo");
-var expression = parser.parseExpression();
-var context = new basicscript.Context();
+exports['execute simple assign'] = function (test) {
+    var parser = new basicscript.Parser("a=1");
+    var command = parser.parseCommand();
 
-assert.ok(expression);
-assert.equal(null, expression.evaluate());
+    test.ok(command);
+    command.execute(context);
 
-// Set initial values
+    test.equal(1, context.getValue("a"));
+}
 
-context.setValue('one', 1);
-context.setValue('two', 2);
+exports['execute expression assign'] = function (test) {
+    var parser = new basicscript.Parser("b=1+2");
+    var command = parser.parseCommand();
 
-// Evaluate add integers
+    test.ok(command);
+    test.ok(command instanceof basicscript.AssignCommand);
+    command.execute(context);
 
-var parser = new basicscript.Parser("1+2");
-var expression = parser.parseExpression();
+    test.equal(3, context.getValue("b"));
+}
 
-assert.ok(expression);
-assert.equal(3, expression.evaluate());
+exports['execute simple expression'] = function (test) {
+    var parser = new basicscript.Parser("1+2\n");
+    var command = parser.parseCommand();
 
-// Execute simple assign
+    test.ok(command);
+    test.ok(command instanceof basicscript.ExpressionCommand);
+    test.equal(3, command.evaluate(context));
+}
 
-var parser = new basicscript.Parser("a=1");
-var command = parser.parseCommand();
+exports['execute two commands'] = function (test) {
+    var parser = new basicscript.Parser("a=2\nb=3");
+    var command = parser.parseCommand();
 
-assert.ok(command);
-command.execute(context);
+    test.ok(command);
+    test.ok(command instanceof basicscript.AssignCommand);
+    command.execute(context);
 
-assert.equal(1, context.getValue("a"));
+    command = parser.parseCommand();
 
-// Execute expression assign
+    test.ok(command);
+    test.ok(command instanceof basicscript.AssignCommand);
+    command.execute(context);
 
-var parser = new basicscript.Parser("b=1+2");
-var command = parser.parseCommand();
+    test.equal(2, context.getValue("a"));
+    test.equal(3, context.getValue("b"));
+}
 
-assert.ok(command);
-assert.ok(command instanceof basicscript.AssignCommand);
-command.execute(context);
+exports['parse equals expression'] = function (test) {
+    var parser = new basicscript.Parser("one = 1");
+    var expression = parser.parseExpression();
 
-assert.equal(3, context.getValue("b"));
+    test.ok(expression);
+    test.ok(expression instanceof basicscript.BinaryExpression);
+    test.equal(expression.evaluate(context), true);
+}
 
-// Execute simple expression
+exports['parse and execute if command'] = function (test) {
+    var parser = new basicscript.Parser("if one = 1\nb=4\nc=5\nend");
+    var command = parser.parseCommand();
 
-var parser = new basicscript.Parser("1+2\n");
-var command = parser.parseCommand();
+    test.ok(command);
+    test.ok(command instanceof basicscript.IfCommand);
 
-assert.ok(command);
-assert.ok(command instanceof basicscript.ExpressionCommand);
-assert.equal(3, command.evaluate(context));
+    test.equal(parser.parseCommand(), null);
+    command.execute(context);
+    test.equal(4, context.getValue("b"));
+    test.equal(5, context.getValue("c"));
+    test.equal(parser.parseCommand(), null);
+}
 
-// Execute two commands
+exports['parse and execute if command with else'] = function (test) {
+    var parser = new basicscript.Parser("if one = 2\nb=5\nelse\nc=6\nend");
+    var command = parser.parseCommand();
 
-var parser = new basicscript.Parser("a=2\nb=3");
-var command = parser.parseCommand();
+    test.ok(command);
+    test.ok(command instanceof basicscript.IfCommand);
 
-assert.ok(command);
-assert.ok(command instanceof basicscript.AssignCommand);
-command.execute(context);
-
-command = parser.parseCommand();
-
-assert.ok(command);
-assert.ok(command instanceof basicscript.AssignCommand);
-command.execute(context);
-
-assert.equal(2, context.getValue("a"));
-assert.equal(3, context.getValue("b"));
-
-// Parse equals expression
-
-var parser = new basicscript.Parser("one = 1");
-var expression = parser.parseExpression();
-
-assert.ok(expression);
-assert.ok(expression instanceof basicscript.BinaryExpression);
-assert.equal(expression.evaluate(context), true);
-
-// Parse and execute if command
-
-var parser = new basicscript.Parser("if one = 1\nb=4\nc=5\nend");
-var command = parser.parseCommand();
-
-assert.ok(command);
-assert.ok(command instanceof basicscript.IfCommand);
-
-assert.equal(parser.parseCommand(), null);
-command.execute(context);
-assert.equal(4, context.getValue("b"));
-assert.equal(5, context.getValue("c"));
-assert.equal(parser.parseCommand(), null);
-
-// Parse and execute if command with else
-
-var parser = new basicscript.Parser("if one = 2\nb=5\nelse\nc=6\nend");
-var command = parser.parseCommand();
-
-assert.ok(command);
-assert.ok(command instanceof basicscript.IfCommand);
-
-assert.equal(parser.parseCommand(), null);
-command.execute(context);
-assert.notEqual(5, context.getValue("b"));
-assert.equal(6, context.getValue("c"));
-assert.equal(parser.parseCommand(), null);
-
+    test.equal(parser.parseCommand(), null);
+    command.execute(context);
+    test.notEqual(5, context.getValue("b"));
+    test.equal(6, context.getValue("c"));
+    test.equal(parser.parseCommand(), null);
+}

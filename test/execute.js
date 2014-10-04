@@ -1,4 +1,6 @@
 
+global.testing = true;
+
 var basicscript = require('../');
 
 exports['execute simple assign'] = function (test) {
