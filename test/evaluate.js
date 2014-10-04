@@ -1,78 +1,78 @@
 
-var basicscript = require('../'),
-    assert = require('assert');
+var basicscript = require('../');
 
-// Evaluate null
+var context;
 
-assert.equal(null, basicscript.evaluate(null));
+exports['evaluate null'] = function (test) {
+    test.equal(null, basicscript.evaluate(null));
+}
 
-// Evaluate empty string
+exports['evaluate empty string'] = function (test) {
+    test.equal(null, basicscript.evaluate(''));
+}
 
-assert.equal(null, basicscript.evaluate(''));
+exports['evaluate spaces'] = function (test) {
+    test.equal(null, basicscript.evaluate('  '));
+}
 
-// Evaluate spaces
+exports['evaluate integer'] = function (test) { 
+    test.equal(123, basicscript.evaluate('123'));
+}
 
-assert.equal(null, basicscript.evaluate('  '));
+exports['evaluate string delimited by single quotes'] = function (test) {
+    test.equal('foo', basicscript.evaluate("'foo'"));
+}
 
-// Evaluate integer
+exports['evaluate string delimited by double quotes'] = function (test) {
+    test.equal('foo', basicscript.evaluate('"foo"'));
+}
 
-assert.equal(123, basicscript.evaluate('123'));
+exports['evaluate undefined name'] = function (test) {
+    context = new basicscript.Context();
 
-// Evaluate string delimited by single quotes
+    test.equal(null, basicscript.evaluate('foo', context));
+}
 
-assert.equal('foo', basicscript.evaluate("'foo'"));
+exports['define values'] = function (test) {
+    context.setValue('one', 1);
+    context.setValue('two', 2);
+    context.setValue('three', 3);
 
-// Evaluate string delimited by double quotes
+    test.equal(1, context.getValue('one'));
+}
 
-assert.equal('foo', basicscript.evaluate('"foo"'));
+exports['evaluate defined name'] = function (test) {
+    test.equal(1, basicscript.evaluate('one', context));
+}
 
-// Evaluate undefined name
+exports['evaluate add integers'] = function (test) {
+    test.equal(3, basicscript.evaluate('1+2'));
+}
 
-var context = new basicscript.Context();
+exports['evaluate add names'] = function (test) {
+    test.equal(3, basicscript.evaluate('one+two', context));
+}
 
-assert.equal(null, basicscript.evaluate('foo', context));
+exports['evaluate subtract integers'] = function (test) {
+    test.equal(-1, basicscript.evaluate('1-2'));
+}
 
-// Define values
+exports['evaluate subtract names'] = function (test) {
+    test.equal(-1, basicscript.evaluate('one-two', context));
+}
 
-context.setValue('one', 1);
-context.setValue('two', 2);
-context.setValue('three', 3);
+exports['evaluate multiply integers'] = function (test) {
+    test.equal(6, basicscript.evaluate('2*3'));
+}
 
-assert.equal(1, context.getValue('one'));
+exports['evaluate multiply names'] = function (test) {
+    test.equal(6, basicscript.evaluate('two*three', context));
+}
 
-// Evaluate defined name
+exports['evaluate divide integers'] = function (test) {
+    test.equal(2/3, basicscript.evaluate('2/3'));
+}
 
-assert.equal(1, basicscript.evaluate('one', context));
-
-// Evaluate add integers
-
-assert.equal(3, basicscript.evaluate('1+2'));
-
-// Evaluate add names
-
-assert.equal(3, basicscript.evaluate('one+two', context));
-
-// Evaluate subtract integers
-
-assert.equal(-1, basicscript.evaluate('1-2'));
-
-// Evaluate subtract names
-
-assert.equal(-1, basicscript.evaluate('one-two', context));
-
-// Evaluate multiply integers
-
-assert.equal(6, basicscript.evaluate('2*3'));
-
-// Evaluate multiply names
-
-assert.equal(6, basicscript.evaluate('two*three', context));
-
-// Evaluate divide integers
-
-assert.equal(2/3, basicscript.evaluate('2/3'));
-
-// Evaluate divide names
-
-assert.equal(2/3, basicscript.evaluate('two/three', context));
-
+exports['evaluate divide names'] = function (test) {
+    test.equal(2/3, basicscript.evaluate('two/three', context));
+}
