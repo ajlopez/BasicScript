@@ -68,7 +68,7 @@ exports['evaluate undefined name as null'] = function (test) {
 }
 
 exports['set and get initial values'] = function (test) {
-    context = new basicscript.Context();
+    context = basicscript.context();
     context.setValue('one', 1);
     context.setValue('two', 2);
     test.equal(context.getValue('one'), 1);

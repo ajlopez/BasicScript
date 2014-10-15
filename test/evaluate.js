@@ -30,7 +30,7 @@ exports['evaluate string delimited by double quotes'] = function (test) {
 }
 
 exports['evaluate undefined name'] = function (test) {
-    context = new basicscript.Context();
+    context = basicscript.context();
 
     test.equal(null, basicscript.evaluate('foo', context));
 }
