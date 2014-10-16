@@ -1,6 +1,4 @@
 
-global.testing = true;
-
 var bslexer = require('../lib/bslexer');
     
 exports['get token type and lexer'] = function (test) {
