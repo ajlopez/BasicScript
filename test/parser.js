@@ -1,18 +1,17 @@
 
-global.testing = true;
-
-var basicscript = require('../');
+var bsparser = require('../lib/bsparser');
+var basicscript = require('..');
 
 var context;
 
 exports['get parser'] = function (test) {
-    var parser = new basicscript.Parser();
+    var parser = bsparser.parser();
 
     test.ok(parser);
 }
 
 exports['parse integer expression'] = function (test) {
-    var parser = new basicscript.Parser('123');
+    var parser = bsparser.parser('123');
     var expression = parser.parseExpression();
 
     test.ok(expression);
@@ -22,7 +21,7 @@ exports['parse integer expression'] = function (test) {
 }
 
 exports['parse integer expression with spaces'] = function (test) {
-    var parser = new basicscript.Parser(' 123 ');
+    var parser = bsparser.parser(' 123 ');
     var expression = parser.parseExpression();
 
     test.ok(expression);
@@ -32,7 +31,7 @@ exports['parse integer expression with spaces'] = function (test) {
 }
 
 exports['parse string expression with double quote'] = function (test) {
-    var parser = new basicscript.Parser('"foo"');
+    var parser = bsparser.parser('"foo"');
     var expression = parser.parseExpression();
 
     test.ok(expression);
@@ -42,7 +41,7 @@ exports['parse string expression with double quote'] = function (test) {
 }
 
 exports['parse string expression with single quote'] = function (test) {
-    var parser = new basicscript.Parser("'foo'");
+    var parser = bsparser.parser("'foo'");
     var expression = parser.parseExpression();
 
     test.ok(expression);
@@ -52,7 +51,7 @@ exports['parse string expression with single quote'] = function (test) {
 }
 
 exports['evaluate name without context as null'] = function (test) {
-    var parser = new basicscript.Parser("foo");
+    var parser = bsparser.parser("foo");
     var expression = parser.parseExpression();
 
     test.ok(expression);
@@ -60,7 +59,7 @@ exports['evaluate name without context as null'] = function (test) {
 }
 
 exports['evaluate undefined name as null'] = function (test) {
-    var parser = new basicscript.Parser("foo");
+    var parser = bsparser.parser("foo");
     var expression = parser.parseExpression();
 
     test.ok(expression);
@@ -76,7 +75,7 @@ exports['set and get initial values'] = function (test) {
 }
 
 exports['evaluate add integers'] = function (test) {
-    var parser = new basicscript.Parser("1+2");
+    var parser = bsparser.parser("1+2");
     var expression = parser.parseExpression();
 
     test.ok(expression);
@@ -84,7 +83,7 @@ exports['evaluate add integers'] = function (test) {
 }
 
 exports['execute simple assign'] = function (test) {
-    var parser = new basicscript.Parser("a=1");
+    var parser = bsparser.parser("a=1");
     var command = parser.parseCommand();
 
     test.ok(command);
@@ -94,37 +93,33 @@ exports['execute simple assign'] = function (test) {
 }
 
 exports['execute expression assign'] = function (test) {
-    var parser = new basicscript.Parser("b=1+2");
+    var parser = bsparser.parser("b=1+2");
     var command = parser.parseCommand();
 
     test.ok(command);
-    test.ok(command instanceof basicscript.AssignCommand);
     command.execute(context);
 
     test.equal(3, context.getValue("b"));
 }
 
 exports['execute simple expression'] = function (test) {
-    var parser = new basicscript.Parser("1+2\n");
+    var parser = bsparser.parser("1+2\n");
     var command = parser.parseCommand();
 
     test.ok(command);
-    test.ok(command instanceof basicscript.ExpressionCommand);
     test.equal(3, command.evaluate(context));
 }
 
 exports['execute two commands'] = function (test) {
-    var parser = new basicscript.Parser("a=2\nb=3");
+    var parser = bsparser.parser("a=2\nb=3");
     var command = parser.parseCommand();
 
     test.ok(command);
-    test.ok(command instanceof basicscript.AssignCommand);
     command.execute(context);
 
     command = parser.parseCommand();
 
     test.ok(command);
-    test.ok(command instanceof basicscript.AssignCommand);
     command.execute(context);
 
     test.equal(2, context.getValue("a"));
@@ -132,20 +127,18 @@ exports['execute two commands'] = function (test) {
 }
 
 exports['parse equals expression'] = function (test) {
-    var parser = new basicscript.Parser("one = 1");
+    var parser = bsparser.parser("one = 1");
     var expression = parser.parseExpression();
 
     test.ok(expression);
-    test.ok(expression instanceof basicscript.BinaryExpression);
     test.equal(expression.evaluate(context), true);
 }
 
 exports['parse and execute if command'] = function (test) {
-    var parser = new basicscript.Parser("if one = 1\nb=4\nc=5\nend");
+    var parser = bsparser.parser("if one = 1\nb=4\nc=5\nend");
     var command = parser.parseCommand();
 
     test.ok(command);
-    test.ok(command instanceof basicscript.IfCommand);
 
     test.equal(parser.parseCommand(), null);
     command.execute(context);
@@ -155,11 +148,10 @@ exports['parse and execute if command'] = function (test) {
 }
 
 exports['parse and execute if command with else'] = function (test) {
-    var parser = new basicscript.Parser("if one = 2\nb=5\nelse\nc=6\nend");
+    var parser = bsparser.parser("if one = 2\nb=5\nelse\nc=6\nend");
     var command = parser.parseCommand();
 
     test.ok(command);
-    test.ok(command instanceof basicscript.IfCommand);
 
     test.equal(parser.parseCommand(), null);
     command.execute(context);
