@@ -159,3 +159,16 @@ exports['parse and execute if command with else'] = function (test) {
     test.equal(6, context.getValue("c"));
     test.equal(parser.parseCommand(), null);
 }
+
+exports['parse and execute while command'] = function (test) {
+    context.setValue("d", 1);
+    var parser = bsparser.parser("while d = 1\nd = d + 1\nend");
+    var command = parser.parseCommand();
+
+    test.ok(command);
+
+    test.equal(parser.parseCommand(), null);
+    command.execute(context);
+    test.equal(2, context.getValue("d"));
+    test.equal(parser.parseCommand(), null);
+}
