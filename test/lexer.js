@@ -30,6 +30,17 @@ exports['parse integer with spaces'] = function (test) {
     test.equal(null, lexer.nextToken());
 }
 
+exports['parse real'] = function (test) {
+    var lexer = bslexer.lexer('123.45');
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal(123.45, token.value);
+    test.equal(bslexer.TokenType.Real, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
 exports['parse string token with double quote'] = function (test) {
     var lexer = bslexer.lexer('"foo"');
     var token = lexer.nextToken();
