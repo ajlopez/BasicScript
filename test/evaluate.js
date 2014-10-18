@@ -73,6 +73,10 @@ exports['evaluate divide integers'] = function (test) {
     test.equal(2/3, basicscript.evaluate('2/3'));
 }
 
+exports['evaluate divide integers'] = function (test) {
+    test.equal(2.1/3.2, basicscript.evaluate('2.1/3.2'));
+}
+
 exports['evaluate divide names'] = function (test) {
     test.equal(2/3, basicscript.evaluate('two/three', context));
 }
