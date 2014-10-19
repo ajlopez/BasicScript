@@ -131,7 +131,23 @@ exports['parse equals expression'] = function (test) {
     var expression = parser.parseExpression();
 
     test.ok(expression);
-    test.equal(expression.evaluate(context), true);
+    test.strictEqual(expression.evaluate(context), true);
+}
+
+exports['parse less expression'] = function (test) {
+    var parser = bsparser.parser("one < 1");
+    var expression = parser.parseExpression();
+
+    test.ok(expression);
+    test.strictEqual(expression.evaluate(context), false);
+}
+
+exports['parse greater expression'] = function (test) {
+    var parser = bsparser.parser("one > 0");
+    var expression = parser.parseExpression();
+
+    test.ok(expression);
+    test.strictEqual(expression.evaluate(context), true);
 }
 
 exports['parse and execute if command'] = function (test) {
