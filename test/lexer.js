@@ -184,9 +184,24 @@ exports['parse arithmetic operators'] = function (test) {
 }
 
 exports['parse simple char comparison operators'] = function (test) {
-    var arithops = "=<>";
+    var arithops = ['=', '<', '>'];
     var l = arithops.length;
-    var lexer = bslexer.lexer(arithops);
+    var lexer = bslexer.lexer(arithops.join(' '));
+
+    for (var n = 0; n < l; n++) {
+        var token = lexer.nextToken();
+        test.ok(token);
+        test.equal(arithops[n], token.value);
+        test.equal(bslexer.TokenType.Operator, token.type);
+    }
+
+    test.equal(null, lexer.nextToken());
+}
+
+exports['parse double char comparison operators'] = function (test) {
+    var arithops = ['<=', '>=', '<>'];
+    var l = arithops.length;
+    var lexer = bslexer.lexer(arithops.join(' '));
 
     for (var n = 0; n < l; n++) {
         var token = lexer.nextToken();
