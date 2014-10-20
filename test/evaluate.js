@@ -80,3 +80,21 @@ exports['evaluate divide integers'] = function (test) {
 exports['evaluate divide names'] = function (test) {
     test.equal(2/3, basicscript.evaluate('two/three', context));
 }
+
+exports['evaluate comparison operators'] = function (test) {
+    test.strictEqual(basicscript.evaluate('1 = 1'), true);
+    test.strictEqual(basicscript.evaluate('1 = 2'), false);
+
+    test.strictEqual(basicscript.evaluate('1 < 1'), false);
+    test.strictEqual(basicscript.evaluate('1 < 2'), true);
+    test.strictEqual(basicscript.evaluate('1 > 1'), false);
+    test.strictEqual(basicscript.evaluate('1 > 2'), false);
+
+    test.strictEqual(basicscript.evaluate('1 <= 1'), true);
+    test.strictEqual(basicscript.evaluate('1 <= 2'), true);
+    test.strictEqual(basicscript.evaluate('1 >= 1'), true);
+    test.strictEqual(basicscript.evaluate('1 >= 2'), false);
+
+    test.strictEqual(basicscript.evaluate('1 <> 1'), false);
+    test.strictEqual(basicscript.evaluate('1 <> 2'), true);
+}
