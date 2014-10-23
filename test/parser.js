@@ -188,3 +188,17 @@ exports['parse and execute while command'] = function (test) {
     test.equal(2, context.getValue("d"));
     test.equal(parser.parseCommand(), null);
 }
+
+exports['parse and execute for command'] = function (test) {
+    context.setValue("a", 0);
+    var parser = bsparser.parser("for k = 1 to 3\na = a + k\nend");
+    var command = parser.parseCommand();
+
+    test.ok(command);
+
+    test.equal(parser.parseCommand(), null);
+    command.execute(context);
+    test.equal(context.getValue("a"), 6);
+    test.equal(context.getValue("k"), 4);
+    test.equal(parser.parseCommand(), null);
+}
