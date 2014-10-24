@@ -202,3 +202,17 @@ exports['parse and execute for command'] = function (test) {
     test.equal(context.getValue("k"), 4);
     test.equal(parser.parseCommand(), null);
 }
+
+exports['parse and execute for command with positive step'] = function (test) {
+    context.setValue("a", 0);
+    var parser = bsparser.parser("for k = 1 to 5 step 2\na = a + k\nend");
+    var command = parser.parseCommand();
+
+    test.ok(command);
+
+    test.equal(parser.parseCommand(), null);
+    command.execute(context);
+    test.equal(context.getValue("a"), 9);
+    test.equal(context.getValue("k"), 7);
+    test.equal(parser.parseCommand(), null);
+}
