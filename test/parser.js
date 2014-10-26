@@ -20,6 +20,16 @@ exports['parse integer expression'] = function (test) {
     test.equal(null, parser.parseExpression());
 }
 
+exports['parse negative integer expression'] = function (test) {
+    var parser = bsparser.parser('-123');
+    var expression = parser.parseExpression();
+
+    test.ok(expression);
+    test.equal(-123, expression.evaluate());
+
+    test.equal(null, parser.parseExpression());
+}
+
 exports['parse integer expression with spaces'] = function (test) {
     var parser = bsparser.parser(' 123 ');
     var expression = parser.parseExpression();
@@ -214,5 +224,19 @@ exports['parse and execute for command with positive step'] = function (test) {
     command.execute(context);
     test.equal(context.getValue("a"), 9);
     test.equal(context.getValue("k"), 7);
+    test.equal(parser.parseCommand(), null);
+}
+
+exports['parse and execute for command with negative step'] = function (test) {
+    context.setValue("a", 0);
+    var parser = bsparser.parser("for k = 5 to 1 step -2\na = a + k\nend");
+    var command = parser.parseCommand();
+
+    test.ok(command);
+
+    test.equal(parser.parseCommand(), null);
+    command.execute(context);
+    test.equal(context.getValue("a"), 9);
+    test.equal(context.getValue("k"), -1);
     test.equal(parser.parseCommand(), null);
 }
