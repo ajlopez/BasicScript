@@ -242,6 +242,18 @@ exports['parse and execute for command with negative step'] = function (test) {
 }
 
 exports['parse and execute dim command'] = function (test) {
+    var parser = bsparser.parser("dim a");
+    var command = parser.parseCommand();
+
+    test.ok(command);
+
+    test.equal(parser.parseCommand(), null);
+    command.execute(context);
+    test.equal(context.getValue("a"), null);
+    test.equal(parser.parseCommand(), null);
+}
+
+exports['parse and execute dim command with initial value'] = function (test) {
     var parser = bsparser.parser("dim a = 1");
     var command = parser.parseCommand();
 
