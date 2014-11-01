@@ -255,6 +255,22 @@ exports['parse add expression with names'] = function (test) {
     test.equal(null, lexer.nextToken());
 }
 
+exports['parse square brackets as delimiters'] = function (test) {
+    var lexer = bslexer.lexer("[]");
+    var token = lexer.nextToken();
+
+    test.ok(token);
+    test.equal("[", token.value);
+    test.equal(bslexer.TokenType.Delimiter, token.type);
+
+    token = lexer.nextToken();
+    test.ok(token);
+    test.equal("]", token.value);
+    test.equal(bslexer.TokenType.Delimiter, token.type);
+
+    test.equal(null, lexer.nextToken());
+}
+
 exports['parse new line'] = function (test) {
     var lexer = bslexer.lexer("\n");
     var token = lexer.nextToken();
