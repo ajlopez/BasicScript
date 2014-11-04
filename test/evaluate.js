@@ -19,6 +19,10 @@ exports['evaluate integer'] = function (test) {
     test.equal(123, basicscript.evaluate('123'));
 }
 
+exports['evaluate real'] = function (test) { 
+    test.equal(123.45, basicscript.evaluate('123.45'));
+}
+
 exports['evaluate string delimited by single quotes'] = function (test) {
     test.equal('foo', basicscript.evaluate("'foo'"));
 }
