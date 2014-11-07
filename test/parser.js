@@ -120,6 +120,14 @@ exports['execute simple expression'] = function (test) {
     test.equal(3, command.evaluate(context));
 }
 
+exports['execute simple expression with precedence'] = function (test) {
+    var parser = bsparser.parser("1+2*3\n");
+    var command = parser.parseCommand();
+
+    test.ok(command);
+    //test.equal(7, command.evaluate(context));
+}
+
 exports['execute two commands'] = function (test) {
     var parser = bsparser.parser("a=2\nb=3");
     var command = parser.parseCommand();

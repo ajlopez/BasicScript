@@ -23,12 +23,20 @@ exports['evaluate negative integer'] = function (test) {
     test.equal(basicscript.evaluate('-123'), -123);
 }
 
+exports['evaluate positive integer'] = function (test) { 
+    test.equal(basicscript.evaluate('+123'), 123);
+}
+
 exports['evaluate real'] = function (test) { 
     test.equal(basicscript.evaluate('123.45'), 123.45);
 }
 
 exports['evaluate negative real'] = function (test) { 
     test.equal(basicscript.evaluate('-123.45'), -123.45);
+}
+
+exports['evaluate positive real'] = function (test) { 
+    test.equal(basicscript.evaluate('+123.45'), 123.45);
 }
 
 exports['evaluate string delimited by single quotes'] = function (test) {
