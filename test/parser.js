@@ -125,7 +125,7 @@ exports['execute simple expression with precedence'] = function (test) {
     var command = parser.parseCommand();
 
     test.ok(command);
-    //test.equal(7, command.evaluate(context));
+    test.equal(7, command.evaluate(context));
 }
 
 exports['execute two commands'] = function (test) {
