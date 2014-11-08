@@ -272,3 +272,16 @@ exports['parse and execute dim command with initial value'] = function (test) {
     test.equal(context.getValue("a"), 1);
     test.equal(parser.parseCommand(), null);
 }
+
+exports['parse and execute return command'] = function (test) {
+    var parser = bsparser.parser("return 1");
+    var command = parser.parseCommand();
+
+    test.ok(command);
+
+    test.equal(parser.parseCommand(), null);
+    command.execute(context);
+    test.ok(context.hasReturnValue);
+    test.equal(context.returnValue, 1);
+    test.equal(parser.parseCommand(), null);
+}
