@@ -285,3 +285,27 @@ exports['parse and execute return command'] = function (test) {
     test.equal(context.returnValue, 1);
     test.equal(parser.parseCommand(), null);
 }
+
+exports['parse and execute break command'] = function (test) {
+    var parser = bsparser.parser("break");
+    var command = parser.parseCommand();
+
+    test.ok(command);
+
+    test.equal(parser.parseCommand(), null);
+    command.execute(context);
+    test.ok(context.hasBreak);
+    test.equal(parser.parseCommand(), null);
+}
+
+exports['parse and execute continue command'] = function (test) {
+    var parser = bsparser.parser("continue");
+    var command = parser.parseCommand();
+
+    test.ok(command);
+
+    test.equal(parser.parseCommand(), null);
+    command.execute(context);
+    test.ok(context.hasContinue);
+    test.equal(parser.parseCommand(), null);
+}
